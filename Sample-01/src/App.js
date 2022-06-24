@@ -16,7 +16,7 @@ import "./App.css";
 
 // fontawesome
 import initFontAwesome from "./utils/initFontAwesome";
-import ScanList from "./components/ScanList";
+import ScanPage from "./pages/ScanPage";
 initFontAwesome();
 
 const App = () => {
@@ -37,7 +37,7 @@ const App = () => {
         <NavBar />
         <Container className="flex-grow-1 mt-5">
               <Switch>
-                {isAuthenticated?  <Route path="/" exact component={ScanList} />
+                {isAuthenticated?  <Route path="/" exact component={ScanPage} />
                     : <Route path="/" exact component={Home} />}
                 <Route path="/profile" component={Profile} />
                 <Route path="/external-api" component={ExternalApi} />

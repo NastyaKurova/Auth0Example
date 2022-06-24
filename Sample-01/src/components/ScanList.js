@@ -1,47 +1,86 @@
-import React, {useEffect, useState} from "react";
-import configJson from "../auth_config.json";
-import {useAuth0} from "@auth0/auth0-react";
-import {getScanData} from "../services/ScanService";
+import * as React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import TablePagination from '@mui/material/TablePagination';
+import {Box, styled, Tooltip, tooltipClasses} from "@mui/material";
 
-function ScanList(){
-    const { getAccessTokenSilently } = useAuth0();
-    const [accessToken, setAccessToken]=useState(null)
-    const [scanData, setScanData]=useState(null)
+const CustomWidthTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+))({
+    [`& .${tooltipClasses.tooltip}`]: {
+        maxWidth: 400,
+    },
+});
 
-    useEffect(()=>{
-        getAccessToken()
-    },[])
 
-    useEffect(()=>{
-        if(accessToken) fetchData()
-    },[accessToken])
 
-    return <div>
-        {scanData?scanData.map(scanItem=><div key={scanItem.ID}>{scanItem.ID}</div>):null}
-    </div>
+export default function ScanList({page, perPage, setPage, setPerPage, scanData,accountsData }) {
 
-    async function fetchData(){
-        try {
-            let scanResults = await getScanData(null,accessToken)
-            scanResults = await scanResults.json()
-            setScanData(scanResults.Data)
-        } catch (e) {
-            throw new Error("Scan api error")
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage + 1);
+    };
 
-        }
-    }
-    async function getAccessToken(){
-        try {
-          const token= await getAccessTokenSilently({
-                audience:configJson.audience,
-            });
-          await setAccessToken(token)
+    const handleChangeRowsPerPage = (event) => {
+        setPerPage(parseInt(event.target.value, 10))
+        setPage(1);
+    };
 
-        } catch (e) {
-            throw new Error("Can't get access token")
-        }
-    }
+    return (
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <TableContainer component={Paper} sx={{ maxHeight: 600 }}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table" stickyHeader >
+                <TableHead>
+                    <TableRow>
+                        <TableCell>CreatedAt</TableCell>
+                        <TableCell>ID</TableCell>
+                        <TableCell>IdentityID</TableCell>
+                        <TableCell>UserID</TableCell>
+                        <TableCell>VIP</TableCell>
+                        <TableCell>VerdictName</TableCell>
+                        <TableCell>VerdictResult</TableCell>
+                        <TableCell>VerdictType</TableCell>
+                        <TableCell>VerdictValue</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {scanData && scanData?.Data.map(({CreatedAt,ID,IdentityID,UserID,VIP,VerdictName,VerdictResult,VerdictType,VerdictValue}) => (
+                        <TableRow
+                            key={ID}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                            <TableCell align="right">{CreatedAt}</TableCell>
+                            <TableCell align="right">{ID}</TableCell>
+                            <TableCell align="right">
+                                <CustomWidthTooltip  title={<Box whiteSpace="pre">{JSON.stringify(
+                                    accountsData.find(({ID}) => ID === IdentityID),
+                                    null, "\t")}</Box>}>
+                                   <span>{IdentityID}</span>
+                                </CustomWidthTooltip></TableCell>
+                            <TableCell align="right">{UserID}</TableCell>
+                            <TableCell align="right">{VIP}</TableCell>
+                            <TableCell align="right">{VerdictName}</TableCell>
+                            <TableCell align="right">{VerdictResult}</TableCell>
+                            <TableCell align="right">{VerdictType}</TableCell>
+                            <TableCell align="right">{VerdictValue}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    <TablePagination
+        rowsPerPageOptions={[10, 20, 50]}
+        component="div"
+        count={scanData?.Pagination.Count || 0}
+        rowsPerPage={perPage}
+        page={page - 1}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+    />
+        </Paper>
+    );
 }
-
-
-export default ScanList;
