@@ -16,10 +16,12 @@ import "./App.css";
 
 // fontawesome
 import initFontAwesome from "./utils/initFontAwesome";
+import ScanList from "./components/ScanList";
 initFontAwesome();
 
 const App = () => {
-  const { isLoading, error } = useAuth0();
+  const { isLoading, error,isAuthenticated } = useAuth0();
+
 
   if (error) {
     return <div>Oops... {error.message}</div>;
@@ -34,11 +36,12 @@ const App = () => {
       <div id="app" className="d-flex flex-column h-100">
         <NavBar />
         <Container className="flex-grow-1 mt-5">
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/profile" component={Profile} />
-            <Route path="/external-api" component={ExternalApi} />
-          </Switch>
+              <Switch>
+                {isAuthenticated?  <Route path="/" exact component={ScanList} />
+                    : <Route path="/" exact component={Home} />}
+                <Route path="/profile" component={Profile} />
+                <Route path="/external-api" component={ExternalApi} />
+              </Switch>
         </Container>
         <Footer />
       </div>
