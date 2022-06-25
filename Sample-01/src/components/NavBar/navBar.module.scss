@@ -1,0 +1,62 @@
+.navContainer{
+
+}
+.navbar{
+    background: white;
+    padding: 16px 16px 16px 100px + 30px;
+    height: 80px;
+}
+.navbarHeader{
+    font-size: 24px;
+}
+.navbarSubHeader{
+    font-size: 18px;
+    color: #b3bac7;
+    font-weight: 400;
+}
+.navbarLinks{
+    margin:0 113px;
+    a{
+
+        color: #b3bac7;
+        &:first-child{
+            margin-right:42px;
+        }
+        &:hover{
+    text-decoration: none;
+        }
+    }
+    .active{
+        color: black;
+    }
+}
+.navbarCollapse{
+    justify-content: right;
+}
+.navbarIco{
+    padding: 0 8px;
+    color: #b3bac7;
+    cursor: pointer;
+}
+.navbarProfileImg{
+    border-radius: 8px;
+}
+.navbarActiveIcon{
+  position: relative;
+}
+.navbarActiveIconCircle{
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: lightseagreen;
+    border-radius: 100%;
+    right: 19px;
+    top: -10px;
+}
+.navbarIcons{
+    display: flex;
+    align-items: center;
+}
+.navbarDropdownMenu{
+    left: -181px;
+}

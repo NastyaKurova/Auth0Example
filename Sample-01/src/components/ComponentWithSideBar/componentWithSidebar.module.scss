@@ -1,0 +1,43 @@
+.sideBar{
+  background: #7242E6;
+  width: 100px;
+  padding: 21px 15px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+
+}
+.sideBarImgBlock{
+  display: flex;
+  justify-content: center;
+}
+.sideBarIcos{
+  margin-top: 78px;
+ }
+
+.sideBarIcosItem{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:white;
+  border-radius: 5px;
+  height: 48px;
+  width: 48px;
+  margin: 16px auto;
+
+  &:hover{
+    background: #8055E9;
+  }
+}
+.sideContainer{
+  margin: 0 auto;
+  padding-left: 100px;
+
+}
+
+@media (min-width: 1200px) {
+  .sideContainer {
+    max-width: 80%;
+  }
+}

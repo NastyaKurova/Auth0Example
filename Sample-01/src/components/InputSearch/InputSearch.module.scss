@@ -1,0 +1,23 @@
+.searchInput{
+  position: relative;
+}
+.searchInputItem{
+  height: 42px;
+  width: 281px;
+  padding: 13px 49px;
+  background: #F5F8FA;
+  border-radius: 10px;
+  color:#A1A5B6;
+  border: 1px solid transparent;
+  &:active,&:focus,&:focus-visible{
+    border: 1px solid #A1A5B6;
+  }
+}
+.searchInputIco{
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  top: 13px;
+  left: 14px;
+  color:  #A1A5B6;
+}

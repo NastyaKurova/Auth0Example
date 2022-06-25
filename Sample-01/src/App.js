@@ -1,10 +1,9 @@
 import React from "react";
 import { Router, Route, Switch } from "react-router-dom";
-import { Container } from "reactstrap";
+
 
 import Loading from "./components/Loading";
-import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
+import NavBar from "./components/NavBar/NavBar";
 import Home from "./views/Home";
 import Profile from "./views/Profile";
 import ExternalApi from "./views/ExternalApi";
@@ -16,7 +15,7 @@ import "./App.css";
 
 // fontawesome
 import initFontAwesome from "./utils/initFontAwesome";
-import ScanPage from "./pages/ScanPage";
+import ScanPage from "./pages/ScanPage/ScanPage";
 initFontAwesome();
 
 const App = () => {
@@ -35,15 +34,14 @@ const App = () => {
     <Router history={history}>
       <div id="app" className="d-flex flex-column h-100">
         <NavBar />
-        <Container className="flex-grow-1 mt-5">
+        <div className="flex-grow-1 mt-5">
               <Switch>
                 {isAuthenticated?  <Route path="/" exact component={ScanPage} />
                     : <Route path="/" exact component={Home} />}
                 <Route path="/profile" component={Profile} />
                 <Route path="/external-api" component={ExternalApi} />
               </Switch>
-        </Container>
-        <Footer />
+        </div>
       </div>
     </Router>
   );

@@ -5,82 +5,69 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import TablePagination from '@mui/material/TablePagination';
-import {Box, styled, Tooltip, tooltipClasses} from "@mui/material";
-
-const CustomWidthTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-))({
-    [`& .${tooltipClasses.tooltip}`]: {
-        maxWidth: 400,
-    },
-});
+import styleBadge from './badge.module.scss';
+import style from './scanList.module.scss';
+import {Pagination} from "@mui/material";
 
 
-
-export default function ScanList({page, perPage, setPage, setPerPage, scanData,accountsData }) {
+export default function ScanList({page, perPage, setPage, scanData, pagination}) {
 
     const handleChangePage = (event, newPage) => {
-        setPage(newPage + 1);
+        setPage(newPage);
     };
 
-    const handleChangeRowsPerPage = (event) => {
-        setPerPage(parseInt(event.target.value, 10))
-        setPage(1);
-    };
 
     return (
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer component={Paper} sx={{ maxHeight: 600 }}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table" stickyHeader >
-                <TableHead>
-                    <TableRow>
-                        <TableCell>CreatedAt</TableCell>
-                        <TableCell>ID</TableCell>
-                        <TableCell>IdentityID</TableCell>
-                        <TableCell>UserID</TableCell>
-                        <TableCell>VIP</TableCell>
-                        <TableCell>VerdictName</TableCell>
-                        <TableCell>VerdictResult</TableCell>
-                        <TableCell>VerdictType</TableCell>
-                        <TableCell>VerdictValue</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {scanData && scanData?.Data.map(({CreatedAt,ID,IdentityID,UserID,VIP,VerdictName,VerdictResult,VerdictType,VerdictValue}) => (
-                        <TableRow
-                            key={ID}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell align="right">{CreatedAt}</TableCell>
-                            <TableCell align="right">{ID}</TableCell>
-                            <TableCell align="right">
-                                <CustomWidthTooltip  title={<Box whiteSpace="pre">{JSON.stringify(
-                                    accountsData.find(({ID}) => ID === IdentityID),
-                                    null, "\t")}</Box>}>
-                                   <span>{IdentityID}</span>
-                                </CustomWidthTooltip></TableCell>
-                            <TableCell align="right">{UserID}</TableCell>
-                            <TableCell align="right">{VIP}</TableCell>
-                            <TableCell align="right">{VerdictName}</TableCell>
-                            <TableCell align="right">{VerdictResult}</TableCell>
-                            <TableCell align="right">{VerdictType}</TableCell>
-                            <TableCell align="right">{VerdictValue}</TableCell>
+       <>
+            <TableContainer className={style.scanList}>
+                <Table sx={{minWidth: 650}} aria-label="simple table" stickyHeader>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell classes={{root: `${style.scanListTr}`}} align="right">ID</TableCell>
+                            <TableCell classes={{root: `${style.scanListTr}`}} align="right">ИМЯ КЛИЕНТА</TableCell>
+                            <TableCell classes={{root: `${style.scanListTr}`}} align="right">ПОЧТА</TableCell>
+                            <TableCell classes={{root: `${style.scanListTr}`}} align="right">АКТИВНОСТЬ РОБОТОВ (КОЛ_ВО)</TableCell>
+                            <TableCell classes={{root: `${style.scanListTr}`}} align="right">СУММА СЧЕТОВ</TableCell>
+                            <TableCell classes={{root: `${style.scanListTr}`}} align="right">ПРИБЫЛЬ</TableCell>
+                            <TableCell classes={{root: `${style.scanListTr}`}} align="right">ДАТА РЕГИСТРАЦИИ</TableCell>
+                            <TableCell classes={{root: `${style.scanListTr}`}} align="right">КОМИССИЯ</TableCell>
+                            <TableCell classes={{root: `${style.scanListTr}`}} align="right">СТАТУС ПЛАТЕЛЬЩИКА</TableCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    <TablePagination
-        rowsPerPageOptions={[10, 20, 50]}
-        component="div"
-        count={scanData?.Pagination.Count || 0}
-        rowsPerPage={perPage}
-        page={page - 1}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-    />
-        </Paper>
+                    </TableHead>
+                    <TableBody>
+                        {scanData?.map(({
+                                            ID,
+                                            FirstName,
+                                            LastName,
+                                            Birthday,
+                                            City,
+                                            State,
+                                            Gender,
+                                            EyeColor,
+                                            Height,
+                                            Weight,
+                                            CreatedAt
+                                        }) => (
+                            <TableRow
+                                key={ID}
+                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                            >
+                                <TableCell classes={{root: `${style.scanListTr}`}} align="right">{ID}</TableCell>
+                                <TableCell classes={{root: `${style.scanListTr}`}} align="right"><strong>{FirstName + ' ' + LastName}</strong></TableCell>
+                                <TableCell classes={{root: `${style.scanListTr}`}} align="right">{Birthday}</TableCell>
+                                <TableCell classes={{root: `${style.scanListTr}`}} align="right">{State}</TableCell>
+                                <TableCell classes={{root: `${style.scanListTr}`}} align="right">{Gender}</TableCell>
+                                <TableCell classes={{root: `${style.scanListTr}`}} align="right">{EyeColor}</TableCell>
+                                <TableCell classes={{root: `${style.scanListTr}`}} align="right">{CreatedAt}</TableCell>
+                                <TableCell classes={{root: `${style.scanListTr}`}} align="right">{Weight}</TableCell>
+                                <TableCell classes={{root: `${style.scanListTr}`}} align="right">{City.length?<span
+                                    className={styleBadge.badgeDanger}>{City}</span>:null}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+                <Pagination color={'primary'} className={style.scanListPagination} page={page} count={Math.ceil(pagination?.Count/perPage)} shape="rounded" onChange={handleChangePage} />
+</>
     );
 }

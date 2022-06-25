@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { NavLink as RouterNavLink } from "react-router-dom";
+import { NavLink as RouterNavLink} from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faSun} from "@fortawesome/free-solid-svg-icons";
+import {faChartPie} from "@fortawesome/free-solid-svg-icons";
+
+import style from "./navBar.module.scss";
 
 import {
   Collapse,
-  Container,
   Navbar,
-  NavbarToggler,
-  NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
   Button,
   UncontrolledDropdown,
   DropdownToggle,
@@ -36,36 +36,30 @@ const NavBar = () => {
     });
 
   return (
-    <div className="nav-container">
-      <Navbar color="light" light expand="md">
-        <Container>
-          <NavbarBrand className="logo" />
-          <NavbarToggler onClick={toggle} />
-          <Collapse isOpen={isOpen} navbar>
-            <Nav className="mr-auto" navbar>
-              <NavItem>
-                <NavLink
-                  tag={RouterNavLink}
-                  to="/"
-                  exact
-                  activeClassName="router-link-exact-active"
-                >
-                  Home
-                </NavLink>
-              </NavItem>
-              {isAuthenticated && (
-                <NavItem>
-                  <NavLink
-                    tag={RouterNavLink}
-                    to="/external-api"
-                    exact
-                    activeClassName="router-link-exact-active"
-                  >
-                    External API
-                  </NavLink>
-                </NavItem>
-              )}
-            </Nav>
+    <div className={style.navContainer}>
+      <Navbar className={style.navbar}  expand="xs">
+
+          <div>
+            <h1 className={style.navbarHeader} >Дашборд</h1>
+              {isAuthenticated && (<h3 className={style.navbarSubHeader}>Данные за последние 24 часа</h3>)}
+          </div>
+          {isAuthenticated && (<div className={style.navbarLinks}>
+            <RouterNavLink  to={`/`} exact activeClassName={style.active}>Дашборд</RouterNavLink >
+            <RouterNavLink  to={`/clients`}  activeClassName={style.active}>Клиенты</RouterNavLink >
+          </div>)}
+
+          <Collapse isOpen={isOpen} navbar className={style.navbarCollapse}>
+              {isAuthenticated && (<div className={style.navbarIcons}>
+                  <FontAwesomeIcon icon="link" className={`mr-2 regular ${style.navbarIco}`} />
+                  <FontAwesomeIcon icon={faChartPie} className={`mr-2 ${style.navbarIco}`} />
+                  <div className={style.navbarActiveIcon}>
+                      <div className={style.navbarActiveIconCircle}></div>
+                      <FontAwesomeIcon icon="link" className={`mr-2 ${style.navbarIco}`} />
+                  </div>
+                <FontAwesomeIcon icon={faSun} className={`mr-2 ${style.navbarIco}`} />
+                <FontAwesomeIcon icon="user" className={`mr-2 ${style.navbarIco}`} />
+
+              </div>)}
             <Nav className="d-none d-md-block" navbar>
               {!isAuthenticated && (
                 <NavItem>
@@ -85,11 +79,11 @@ const NavBar = () => {
                     <img
                       src={user.picture}
                       alt="Profile"
-                      className="nav-user-profile rounded-circle"
+                      className={`nav-user-profile  ${style.navbarProfileImg}`}
                       width="50"
                     />
                   </DropdownToggle>
-                  <DropdownMenu>
+                  <DropdownMenu className={style.navbarDropdownMenu}>
                     <DropdownItem header>{user.name}</DropdownItem>
                     <DropdownItem
                       tag={RouterNavLink}
@@ -163,7 +157,6 @@ const NavBar = () => {
               </Nav>
             )}
           </Collapse>
-        </Container>
       </Navbar>
     </div>
   );
